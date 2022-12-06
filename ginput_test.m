@@ -5,12 +5,14 @@ hold on
 for kk = 1:size(obstacles,1)
     plot_obstacle(obstacles(kk,1),obstacles(kk,2:3));
 end
-x0 = 0; % x start
-xf = 20; % x final
+x0 = -2; % x start
+xf = 25; % x final
 y0 = 6;
 yf = 12;
 plot_start([x0,y0])
 plot_end([xf,yf])
+axis('equal')
+axis([x0-5 xf+5 -5 30])
 
 input_clicks = ginput(size(obstacles,1))
 % input_clicks = [1.2673   14.6647;
@@ -25,7 +27,7 @@ x_span_guess = x_span(2:end-1);
 
 y_guess = ones(1,N-1);
 
-input_point_idx = zeros(1,3);
+input_point_idx = zeros(1,size(obstacles,1));
 for ii = 1:size(input_clicks,1)
     % replaces guesses with ginput click values
     x_click = input_clicks(ii,1)*ones(size(x_span_guess));

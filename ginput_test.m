@@ -1,6 +1,6 @@
 figure(88)
 clf()
-obstacles = read_obstacle_file('6_obstacle.txt');
+obstacles = read_obstacle_file('obstacle_envs/6_obstacle.txt');
 hold on
 for kk = 1:size(obstacles,1)
     plot_obstacle(obstacles(kk,1),obstacles(kk,2:3));
@@ -14,10 +14,11 @@ plot_end([xf,yf])
 axis('equal')
 axis([x0-5 xf+5 -5 30])
 
-input_clicks = ginput(size(obstacles,1))
-% input_clicks = [1.2673   14.6647;
-%                 5.7373    3.9359;
-%                 16.5207   12.7405];
+% input_clicks = ginput(size(obstacles,1))
+% % input_clicks = [1.2673   14.6647;
+% %                 5.7373    3.9359;
+% %                 16.5207   12.7405];
+input_clicks = multi_click_input();
 
 dx = 0.1; % step size x dim; below 0.2 exceeds function evaluation limit
 

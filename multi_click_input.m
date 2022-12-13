@@ -11,6 +11,8 @@ if promptOn
     if strcmpi(button, 'Cancel')
         return;
     end
+else
+    fprintf('Left click up to %d points.\nRight click when done.\n', maxAllowablePoints);
 end
 h = [];
 while numPointsClicked < maxAllowablePoints

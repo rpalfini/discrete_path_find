@@ -28,7 +28,7 @@ x_span_guess = x_span(2:end-1);
 
 y_guess = ones(1,N-1);
 
-input_point_idx = zeros(1,size(obstacles,1));
+input_point_idx = zeros(1,size(input_clicks,1));
 for ii = 1:size(input_clicks,1)
     % replaces guesses with ginput click values
     x_click = input_clicks(ii,1)*ones(size(x_span_guess));

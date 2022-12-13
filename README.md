@@ -9,6 +9,10 @@ Problems solved and file that solves:
 - short_dist_var_dx.m: Solves the shortest distance from a start to end point using varied size dx between steps
 - short_dist_curv.m: Solves shortest distance from specified start point to unknown end point along specified curve 
 
+Saving Results:
+- Results can be saved to file with save_sim_results.m
+- Results can be made into a gif with create_results_gif.m
+
 External Packages Used:
 - globalOutputFcns: used to get optimization steps data
 

@@ -11,23 +11,61 @@ global outputFcn_global_data x_vals obstacles
 % xvals and obstacles pass the simulation info to constraint function
 test_type = 'short_dist_multi_obst'; % used to identify in output log
 
-% different initial y guesses
-y_option = 1;
+figure(88)
+clf()
+obstacles = read_obstacle_file('obstacle_envs/6_obstacle.txt');
+hold on
+for kk = 1:size(obstacles,1)
+    plot_obstacle(obstacles(kk,1),obstacles(kk,2:3));
+end
+x0 = -2; % x start
+xf = 25; % x final
+y0 = 6;
+yf = 12;
+plot_start([x0,y0])
+plot_end([xf,yf])
+axis('equal')
+axis([x0-5 xf+5 -5 30])
 
-% simulation discretizations
-dx = 0.1; % step size x dim; below 0.2 exceeds function evaluation limit
-x0 = 0; % x start
-xf = 10; % x final
+input_clicks = multi_click_input();
+
+dx = 0.5; % step size x dim; below 0.2 exceeds function evaluation limit
+
 N = (xf-x0)/dx; % num steps
 x_span = x0:dx:xf;
+x_span_guess = x_span(2:end-1);
 
-y0 = 0; % y initial, y(x0)
-yf = 0; % y final, y(xf)
+y_guess = ones(1,N-1);
 
-% obstacle locations formatted [radius, center_x, center_y]
-obstacles = read_obstacle_file('4_obstacle.txt');
+input_point_idx = zeros(1,size(input_clicks,1));
+for ii = 1:size(input_clicks,1)
+    % replaces guesses with ginput click values
+    x_click = input_clicks(ii,1)*ones(size(x_span_guess));
+    x_diff = abs(x_click-x_span_guess);
+    x_idx = find(x_diff==min(x_diff));
+    input_point_idx(ii) = x_idx+1; % this is needed b/c x_span_guess is missing entry x0, where as when this is used below, x_span has entry x0
+    fprintf('%d idx, %.2f x_click, %.2f x_span\n',x_idx,x_click(1),x_span_guess(x_idx))
+    y_guess(x_idx) = input_clicks(ii,2);
+end
 
-y_guess = make_y_guess(y_option,N); 
+input_point_idx = sort(input_point_idx);
+input_point_idx = [1 input_point_idx length(x_span)];
+y_span_guess = [y0 y_guess yf];
+for ii = 1:length(input_point_idx)-1
+    num_points = input_point_idx(ii+1)-input_point_idx(ii);
+    y_at1 = y_span_guess(input_point_idx(ii));
+    y_at2 = y_span_guess(input_point_idx(ii+1));
+    x_at1 = x_span(input_point_idx(ii));
+    x_at2 = x_span(input_point_idx(ii+1));
+    slope12 = (y_at2-y_at1)/(x_at2-x_at1);
+    dx = x_span(2)-x_span(1);
+    for jj = input_point_idx(ii):input_point_idx(ii)+num_points-1
+    % creates linear slopes between inputted clicked points
+        y_span_guess(jj+1) = y_span_guess(jj) + slope12*dx;
+    end
+end
+y_guess = y_span_guess(2:end-1);
+plot(x_span,y_span_guess,'.-','Color',[0.3010 0.7450 0.9330])
 
 % build optimization function
 f = @(y)  sqrt(dx^2 + (y(1)-y0)^2);
@@ -60,62 +98,22 @@ x_out = x_span;
 figure(25)
 plot_start([x0 y0])
 plot_end([xf yf])
-plot(x_out,y_out,'b.-')
+plot_solution(x_out,y_out)
+% plot(x_out,y_out,'b.-')
 % plot(x_out,y_out,'.-','Color',[0 0.4470 0.7410])
-hold on
+
 % plot guess
-y_out_guess = [y0 y_guess yf];
-plot(x_out,y_out_guess,'.-','Color',[0.3010 0.7450 0.9330])
+% plot(x_out,y_span_guess,'.-','Color',[0.3010 0.7450 0.9330])
+plot_guess(x_out,y_span_guess)
 % plot obstacle
 for kk = 1:size(obstacles,1)
     plot_obstacle(obstacles(kk,1),obstacles(kk,2:3))
 end
 legend_entries = {'start','end','solution','guess',''};
 legend(legend_entries);
-make_title(y_option)
+% make_title(y_option)
 grid on
 axis equal
 hold off
 
-function y_guess_out = make_y_guess(y_option,N)
-% makes initial y value guesses based on number of steps and user input
-global x_vals
-y_guess = ones(1,N-1); % one less interval than points
-switch y_option
-    case 1
-        y_guess = 4*y_guess;
-    case 2
-        y_guess = 2*y_guess;
-%         for jj = 1:length(y_guess)-1
-%             y_guess(jj+1) = y_guess(jj) + 0.1;
-%         end
-    case 3
-        y_guess = -1*y_guess;
-%         for jj = 1:length(y_guess)-1
-%             y_guess(jj+1) = y_guess(jj) + 0.1;
-%         end
-%         y_guess = flip(y_guess);
-    case 4
-        % making more complicated guess
-        y_guess = -1*y_guess;
-        x_idx1 = 3.2;
-        x_idx2 = 5;
-        idx1 = find(x_vals < x_idx1);
-        idx2 = find(x_vals < x_idx2);
-        num_points = idx2(end)-idx1(end);
-        y_at1 = -1;
-        y_at2 = 4;
-        slope12 = (y_at2-y_at1)/(x_idx2-x_idx1);
-        dx = x_vals(2)-x_vals(1);
-        for ii = idx1(end)-2:idx1(end)-2+num_points-1
-            y_guess(ii+1) = y_guess(ii) + slope12*dx;
-        end
-        y_guess(idx2(end)-2:end) = y_at2;
-
-
-%         y_guess = [9 8 -2 1];
-    otherwise
-end
-y_guess_out = y_guess;
-end
 

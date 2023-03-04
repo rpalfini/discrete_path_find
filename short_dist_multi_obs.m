@@ -11,21 +11,28 @@ global outputFcn_global_data x_vals obstacles
 % xvals and obstacles pass the simulation info to constraint function
 test_type = 'short_dist_multi_obst'; % used to identify in output log
 
-figure(88)
+input_fig=figure(88);
 clf()
-obstacles = read_obstacle_file('obstacle_envs/6_obstacle.txt');
+% obstacles = read_obstacle_file('obstacle_envs/6_obstacle.txt');
+obstacles = read_obstacle_file('obstacle_envs/cluttered.txt');
 hold on
 for kk = 1:size(obstacles,1)
     plot_obstacle(obstacles(kk,1),obstacles(kk,2:3));
 end
-x0 = -2; % x start
-xf = 25; % x final
-y0 = 6;
-yf = 12;
+% x0 = 0; % x start
+% y0 = 27;
+% xf = 23; % x final
+% yf = -1;
+x0 = -1; % x start
+y0 = 2;
+xf = 10; % x final
+yf = 3;
 plot_start([x0,y0])
 plot_end([xf,yf])
 axis('equal')
-axis([x0-5 xf+5 -5 30])
+% axis([x0-5 xf+5 -5 30])
+axis([x0-2 xf+2 -2 8])
+title(sprintf('Add Waypoints with left click\nFinish with right click'))
 
 input_clicks = multi_click_input();
 
@@ -92,6 +99,7 @@ ub = [];
 opt_results = outputFcn_global_data;
 %%
 % plot results
+close(input_fig) % close plot showing 
 y_out = [y0 x yf];
 x_out = x_span;
 

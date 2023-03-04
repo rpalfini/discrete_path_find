@@ -31,7 +31,6 @@ else
     obst1 = [1 2 0.5];
     obst2 = [0.5 6 3];
     obstacles = [obst1; obst2];
-
 end
 
 y_guess = make_y_guess(y_option,N); 

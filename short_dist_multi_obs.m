@@ -65,7 +65,7 @@ for ii = 1:length(input_point_idx)-1
     end
 end
 y_guess = y_span_guess(2:end-1);
-plot(x_span,y_span_guess,'.-','Color',[0.3010 0.7450 0.9330])
+plot_guess(x_span,y_span_guess)
 
 % build optimization function
 f = @(y)  sqrt(dx^2 + (y(1)-y0)^2);

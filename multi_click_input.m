@@ -1,4 +1,4 @@
-function points_out = multi_click_input()
+function points_out = multi_click_input(verbose)
 % based on %from https://www.mathworks.com/matlabcentral/answers/156494-ginput-how-to-prompt-for-value-after-each-click
 hold on;
 maxAllowablePoints = 20; % Whatever you want.

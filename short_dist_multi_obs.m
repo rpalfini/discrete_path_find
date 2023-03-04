@@ -75,10 +75,6 @@ for ii = 1:length(input_point_idx)-1
 end
 y_guess = y_span_guess(2:end-1);
 plot_guess(x_span,y_span_guess)
-dog = 1;
-if dog == 1
-    load('demo_guess.mat')
-end
 
 % build optimization function
 f = @(y)  sqrt(dx^2 + (y(1)-y0)^2);

@@ -11,4 +11,4 @@ y_out = y_out + center(2);
 data_out = [x_out',y_out'];
 
 % figure(fig)
-plot(x_out,y_out,'Color',[0.4940 0.1840 0.5560])
+plot(x_out,y_out,'Color',[0.4940 0.1840 0.5560],'LineWidth',2)

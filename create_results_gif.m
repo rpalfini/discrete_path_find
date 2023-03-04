@@ -1,12 +1,12 @@
 % this function takes results of fmincon and makes into a gif
 tic
 % options
-axis_frame = [0 10 -3 3]; % sets axis limits when creating the gif
+axis_frame = [0 30 0 25]; % sets axis limits when creating the gif
 is_const_dx = 1; % option to specify if using variable dx or not
 is_obst = 1; % option to plot obstacles
-frame_div = 4; % divides number of frames outputed by this number i.e. shows every 5th frame
+frame_div = 2; % divides number of frames outputed by this number i.e. shows every 5th frame
 gif_delay = 1/15;
-gif_title = 'short_dist_obs_guess6';
+gif_title = 'demo_1_above';
 legend_loc = 'northeast';
 
 gif_results_path = 'solution_result_gifs\';
@@ -16,6 +16,8 @@ gif_name = strcat(gif_results_path,gif_title,'.gif');
 start_point = [x_out(1) y_out(1)];
 end_point = [x_out(end) y_out(end)];
 
+obstacles = read_obstacle_file('obstacle_envs/1_obstacle.txt');
+
 out_fig = figure(33);
 % out_fig.Visible = 'on'; % turning this off didn't improve output time
 clf
@@ -23,10 +25,14 @@ num_iter = length(opt_results);
 for ii = 1:num_iter
     plot_start(start_point)
     plot_end(end_point)
-    plot(x_out,y_out_guess,'.-','Color',[0.3010 0.7450 0.9330])
+%     plot(x_out,y_out_guess,'.-','Color',[0.3010 0.7450 0.9330])
+    plot_guess(x_out,y_span_guess)
     if is_obst
-        plot_obstacle(1,[2 0.5]);
-        plot_obstacle(0.5,[6 3]);
+%         plot_obstacle(1,[2 0.5]);
+%         plot_obstacle(0.5,[6 3]);
+        for kk = 1:size(obstacles,1)
+            plot_obstacle(obstacles(kk,1),obstacles(kk,2:3));
+        end
     end
 
     if is_const_dx
@@ -35,10 +41,11 @@ for ii = 1:num_iter
         [x_data,y_data] = pull_opt_data_vardx(opt_results(ii).x,start_point,end_point,offset_y);
     end
 %     plot(x_data,y_data,'.-','Color',[0 0.4470 0.7410])
-    plot(x_data,y_data,'b.-')
-    legend_entries = {'start','end','guess','solution','',''};
+%     plot(x_data,y_data,'b.-','LineWidth',2)
+    plot_solution(x_data,y_data)
+    legend_entries = {'start','end','','guess','solution'};
     legend(legend_entries,'Location',legend_loc);
-    make_title(y_option)
+%     make_title(y_option)
     hold off
     grid on
     axis(axis_frame);

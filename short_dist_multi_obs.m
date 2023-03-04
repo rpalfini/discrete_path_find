@@ -14,7 +14,8 @@ test_type = 'short_dist_multi_obst'; % used to identify in output log
 input_fig=figure(88);
 clf()
 % obstacles = read_obstacle_file('obstacle_envs/6_obstacle.txt');
-obstacles = read_obstacle_file('obstacle_envs/cluttered.txt');
+% obstacles = read_obstacle_file('obstacle_envs/cluttered.txt');
+obstacles = read_obstacle_file('obstacle_envs/1_obstacle.txt');
 hold on
 for kk = 1:size(obstacles,1)
     plot_obstacle(obstacles(kk,1),obstacles(kk,2:3));
@@ -23,15 +24,16 @@ end
 % y0 = 27;
 % xf = 23; % x final
 % yf = -1;
-x0 = -1; % x start
-y0 = 2;
-xf = 10; % x final
-yf = 3;
+% x0 = -1; % x start
+% y0 = 2;
+% xf = 10; % x final
+% yf = 3;
+x0 = 4; y0 = 10; xf = 27; yf = 9;
 plot_start([x0,y0])
 plot_end([xf,yf])
 axis('equal')
 % axis([x0-5 xf+5 -5 30])
-axis([x0-2 xf+2 -2 8])
+axis([x0-2 xf+2 0 25])
 title(sprintf('Add Waypoints with left click\nFinish with right click'))
 
 input_clicks = multi_click_input();
@@ -73,6 +75,10 @@ for ii = 1:length(input_point_idx)-1
 end
 y_guess = y_span_guess(2:end-1);
 plot_guess(x_span,y_span_guess)
+dog = 1;
+if dog == 1
+    load('demo_guess.mat')
+end
 
 % build optimization function
 f = @(y)  sqrt(dx^2 + (y(1)-y0)^2);

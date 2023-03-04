@@ -1,3 +1,7 @@
-function [outputArg1,outputArg2] = make_legend(legend_entries)
+function make_legend(varargin)
+legend_entries = {};
+for ii = 1:nargin
+    legend_entries{ii} = varargin{ii};
+end
 legend(legend_entries)
 end

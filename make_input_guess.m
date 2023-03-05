@@ -1,4 +1,4 @@
-function [x_span,y_span_guess,N] = make_input_guess(x_start,x_end,dx)
+function [x_span,y_span_guess,N] = make_input_guess(x_start,x_end,dx,verbose)
 % Uses ginput to make a guess for our problem and modifies guess to match
 % it
 
@@ -19,7 +19,9 @@ for ii = 1:size(input_clicks,1)
     x_diff = abs(x_click-x_span_guess);
     x_idx = find(x_diff==min(x_diff));
     input_point_idx(ii) = x_idx+1; % this is needed b/c x_span_guess is missing entry x0, where as when this is used below, x_span has entry x0
-    fprintf('%d idx, %.2f x_click, %.2f x_span\n',x_idx,x_click(1),x_span_guess(x_idx))
+    if verbose
+        fprintf('%d idx, %.2f x_click, %.2f x_span\n',x_idx,x_click(1),x_span_guess(x_idx))
+    end
     y_guess(x_idx) = input_clicks(ii,2);
 end
 
@@ -39,3 +41,4 @@ for ii = 1:length(input_point_idx)-1
         y_span_guess(jj+1) = y_span_guess(jj) + slope12*dx;
     end
 end
+plot_ginput_points(input_clicks(:,1),input_clicks(:,2))

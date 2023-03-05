@@ -6,7 +6,7 @@ is_const_dx = 1; % option to specify if using variable dx or not
 is_obst = 1; % option to plot obstacles
 frame_div = 2; % divides number of frames outputed by this number i.e. shows every 5th frame
 gif_delay = 1/15;
-gif_title = 'demo_1_above';
+gif_title = 'demo_1_below';
 legend_loc = 'northeast';
 
 gif_results_path = 'solution_result_gifs\';
@@ -24,6 +24,7 @@ clf
 num_iter = length(opt_results);
 for ii = 1:num_iter
     plot_start(start_point)
+    title("guess\_below")
     plot_end(end_point)
 %     plot(x_out,y_out_guess,'.-','Color',[0.3010 0.7450 0.9330])
     plot_guess(x_out,y_span_guess)
@@ -43,7 +44,7 @@ for ii = 1:num_iter
 %     plot(x_data,y_data,'.-','Color',[0 0.4470 0.7410])
 %     plot(x_data,y_data,'b.-','LineWidth',2)
     plot_solution(x_data,y_data)
-    legend_entries = {'start','end','','guess','solution'};
+    legend_entries = {'start','end','guess','','solution'};
     legend(legend_entries,'Location',legend_loc);
 %     make_title(y_option)
     hold off

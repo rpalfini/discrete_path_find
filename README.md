@@ -1,3 +1,4 @@
+# Overview
 Files in this directory solve optimization problems using discrete formulations.  To run, choose one of the files and run it to see results.  There are various options you can modify to change the problems.  You can modify:
 - the number of steps taken to reach the solution (usually variable N)
 - the interval between x steps when finding the solution (when available)
@@ -16,3 +17,5 @@ Saving Results:
 External Packages Used:
 - globalOutputFcns: used to get optimization steps data
 
+## Demo Usage
+To use the demo in this package, open opt_path_demo.mlx and work through it.

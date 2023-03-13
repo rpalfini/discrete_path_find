@@ -1,5 +1,11 @@
 % this function takes results of fmincon and makes into a gif
 tic
+
+% check if gif is on path, and add if it isnt
+if isempty(which('gif'))
+    addpath(genpath(fullfile('.', 'gif_func')));
+end
+
 % options
 axis_frame = [0 30 0 25]; % sets axis limits when creating the gif
 is_const_dx = 1; % option to specify if using variable dx or not
